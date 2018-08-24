@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
+import styled from 'styled-components';
 
 const COMMENTS_SUBSCRIPTION = gql`
   subscription {
@@ -12,19 +13,74 @@ const COMMENTS_SUBSCRIPTION = gql`
   }
 `;
 
+const List = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const CommentItem = styled.div`
+  width: 700px;
+  padding: 8px;
+  margin-bottom: 16px;
+  display: grid;
+
+  grid-template-rows: 1em 1em 1fr;
+  grid-template-columns: repeat(8, 1fr);
+
+  background: #FFF;
+  border-radius: 8px;
+`;
+
+const Title = styled.h3`
+  margin: 0;
+  grid-row: 1;
+  color: black;
+  font-size: 0.8em;
+  grid-column: 1 / 4;
+`;
+
+const Talk = styled.p`
+  margin: 0;
+  grid-row: 2;
+  color: gray;
+  font-size: 0.8em;
+  grid-column: 1 / -1;
+`;
+
+const Timestamp = styled.p`
+  margin: 0;
+  font-size: 0.8em;
+  text-align: right;
+  color: gray;
+  grid-row: 1;
+  grid-column: 4 / -1;
+`;
+
+const Content = styled.p`
+  margin: 0;
+  margin-top: 1em;
+  grid-row: 3;
+  grid-column: 1 / -1;
+`;
+
 const Comment = (props) => {
   const { data: {
     comment,
-    // createdOn,
+    createdOn,
     author: { name },
     talk: { title }
   }} = props;
 
+  console.log('createdOn', Date(createdOn));
+
   return (
-    <div>
-      <p>Author: {name} | Talk: {title}</p>
-      <p>{comment}</p>
-    </div>
+    <CommentItem>
+      <Title>{name}</Title>
+      <Timestamp>{createdOn}</Timestamp>
+      <Talk>[{title}]</Talk>
+      <Content>{comment}</Content>
+    </CommentItem>
   );
 }
 
@@ -83,12 +139,15 @@ class CommentOverview extends Component {
     if (loading) {
       return <p>Loading...</p>
     }
+    if (!data) {
+      return <p>No data received...</p>
+    }
     return (
-      <ul>
+      <List>
         {data.comments.content.map(comment => (
           <Comment data={comment} key={comment.id} />
         ))}
-      </ul>
+      </List>
     );
   }
 }
