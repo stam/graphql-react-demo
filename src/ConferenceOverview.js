@@ -12,7 +12,7 @@ import React from 'react';
 // `;
 
 const ConferenceOverview = () => (
-    <div>Conference Overview</div>
+  <div>Conference Overview</div>
 )
 
 export default ConferenceOverview;
