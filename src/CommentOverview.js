@@ -72,12 +72,10 @@ const Comment = (props) => {
     talk: { title }
   }} = props;
 
-  console.log('createdOn', Date(createdOn));
-
   return (
     <CommentItem>
       <Title>{name}</Title>
-      <Timestamp>{createdOn}</Timestamp>
+      <Timestamp>{createdOn.substr(11, 12)}</Timestamp>
       <Talk>[{title}]</Talk>
       <Content>{comment}</Content>
     </CommentItem>
