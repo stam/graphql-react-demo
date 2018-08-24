@@ -18,9 +18,7 @@ const COMMENTS_QUERY = gql`
         talk {
           title
         }
-        author {
-          name
-        }
+        author
       }
     }
   }

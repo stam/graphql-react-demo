@@ -5,13 +5,17 @@ import styled from 'styled-components';
 const COMMENTS_SUBSCRIPTION = gql`
   subscription {
     comments {
+      id,
       comment
       createdOn
-      authorName
-      talkTitle
+      talk {
+        title
+      }
+      author
     }
   }
 `;
+
 
 const List = styled.div`
   display: flex;
@@ -68,13 +72,13 @@ const Comment = (props) => {
   const { data: {
     comment,
     createdOn,
-    author: { name },
+    author,
     talk: { title }
   }} = props;
 
   return (
     <CommentItem>
-      <Title>{name}</Title>
+      <Title>{author}</Title>
       <Timestamp>{createdOn.substr(11, 12)}</Timestamp>
       <Talk>[{title}]</Talk>
       <Content>{comment}</Content>
@@ -101,7 +105,9 @@ class CommentOverview extends Component {
       return previousResult;
     }
 
-    const newComment = this.sanitizeCommentUpdateReponse(subscriptionData);
+    //const newComment = this.sanitizeCommentUpdateReponse(subscriptionData);
+
+    const newComment = subscriptionData.data.comments;
 
     return Object.assign({}, previousResult, {
       comments: {
@@ -109,26 +115,6 @@ class CommentOverview extends Component {
         content: [...previousResult.comments.content, newComment]
       }
     });
-  }
-
-  sanitizeCommentUpdateReponse(subscriptionData) {
-    const { talkTitle, authorName, ...commentData } = subscriptionData.data.comments;
-
-    // The comment from the subscription returns talkTitle and authorName flattened.
-    // Convert it to nested syntax to match query response
-    // Also apollo-client crashes hard when we don't specifically define the __typenames....
-    return {
-      id: Date.now(), // Please add this to the contentUpdate response
-      talk: {
-        title: talkTitle,
-        __typename: 'Talk',
-      },
-      author: {
-        name: authorName,
-        __typename: 'Person',
-      },
-      ...commentData,
-    }
   }
 
   render() {
