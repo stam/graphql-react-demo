@@ -1,10 +1,10 @@
 import React from 'react';
-import ConferenceOverview from './ConferenceOverview';
+import CommentFeed from './CommentFeed';
 
 const App = () => (
   <div>
     <h1>graphql-react-demo</h1>
-    <ConferenceOverview />
+    <CommentFeed />
   </div>
 );
 

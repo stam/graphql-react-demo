@@ -17,7 +17,7 @@ const httpLink = new HttpLink({
 });
 
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:8080/subscription`,
+  uri: `ws://localhost:8080/subscriptions`,
   options: {
     reconnect: true
   }
