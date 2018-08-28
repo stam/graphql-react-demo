@@ -104,8 +104,6 @@ class CommentOverview extends Component {
       return previousResult;
     }
 
-    //const newComment = this.sanitizeCommentUpdateReponse(subscriptionData);
-
     const newComment = subscriptionData.data.comments;
 
     return Object.assign({}, previousResult, {
