@@ -24,8 +24,7 @@ const List = styled.div`
 `;
 
 const CommentItem = styled.div`
-  width: 700px;
-  padding: 8px;
+  padding: 16px;
   margin-bottom: 16px;
   display: grid;
 
@@ -105,14 +104,12 @@ class CommentOverview extends Component {
       return previousResult;
     }
 
-    //const newComment = this.sanitizeCommentUpdateReponse(subscriptionData);
-
     const newComment = subscriptionData.data.comments;
 
     return Object.assign({}, previousResult, {
       comments: {
         __typename: 'CommentPageableResponse',
-        content: [...previousResult.comments.content, newComment]
+        content: [newComment, ...previousResult.comments.content]
       }
     });
   }
